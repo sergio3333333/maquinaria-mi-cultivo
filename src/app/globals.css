@@ -2,7 +2,14 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0a0a0a;
+
+  /* COLORES CORPORATIVOS */
+  --primary: #1b5e20; /* Verde principal */
+  --accent: #4caf50;  /* Verde más claro */
+  --input-bg: #f4f4f4;
+  --input-text: #1b1b1b;
+  --border-color: #cfcfcf;
 }
 
 @theme inline {
@@ -10,17 +17,54 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f0f0f;
+    --foreground: #ffffff;
+    --input-bg: #1e1e1e;
+    --input-text: #e6e6e6;
+    --border-color: #3a3a3a;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+/* ==== INPUTS ==== */
+input {
+  background: var(--input-bg);
+  color: var(--input-text);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+}
+
+input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* ==== BOTONES ==== */
+button {
+  background: var(--primary);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: var(--accent);
+}
+

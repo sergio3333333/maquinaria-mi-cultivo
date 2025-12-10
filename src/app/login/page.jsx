@@ -30,6 +30,7 @@ export default function Login() {
     password: "",
   });
 
+  // ------------------------ LOGIN ------------------------
   const handleLogin = async () => {
     setError("");
 
@@ -57,6 +58,7 @@ export default function Login() {
     }
   };
 
+  // ------------------------ REGISTER ------------------------
   const handleRegisterClient = async () => {
     setRegisterError("");
     setRegisterSuccess("");
@@ -102,89 +104,91 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen p-6 flex justify-center items-center bg-gradient-to-br from-gray-200 to-gray-50">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm border border-gray-200">
+    <div className="min-h-screen flex justify-center items-center bg-gray-200 p-6">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm">
+
+        {/* Branding */}
+        <h1 className="text-3xl font-bold text-center mb-6" style={{ color: "var(--primary)" }}>
+          MI CULTIVO 
+        </h1>
 
         {!showRegister ? (
           <>
-            <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">Iniciar Sesión</h1>
+            <h2 className="text-xl font-semibold mb-4 text-center" style={{ color: "var(--text-dark)" }}>
+              Iniciar Sesión
+            </h2>
 
-            <input className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full mb-4 outline-none focus:ring-2 focus:ring-blue-500 transition"
+            <input
+              className="border rounded-md w-full p-3 mb-3 text-black"
+              style={{ backgroundColor: "var(--input-bg)", borderColor: "var(--input-border)" }}
               placeholder="Correo"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
 
-            <input type="password"
-              className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full mb-4 outline-none focus:ring-2 focus:ring-blue-500 transition"
+            <input
+              type="password"
+              className="border rounded-md w-full p-3 mb-3 text-black"
+              style={{ backgroundColor: "var(--input-bg)", borderColor: "var(--input-border)" }}
               placeholder="Contraseña"
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
 
-            <button onClick={handleLogin} className="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+            <button
+              onClick={handleLogin}
+              className="w-full text-white p-3 rounded-md font-semibold transition hover:scale-105"
+              style={{ backgroundColor: "var(--primary)" }}
+            >
               Entrar
             </button>
 
-            {error && <p className="text-red-600 text-sm mt-3 text-center">{error}</p>}
+            {error && <p className="text-red-600 mt-3 text-center">{error}</p>}
 
-            <p className="mt-5 text-center text-sm text-gray-600">
-              ¿No tienes cuenta?{" "}
-              <button onClick={() => setShowRegister(true)} className="text-blue-600 font-semibold hover:underline">
-                Crear nuevo usuario
+            <p className="mt-5 text-center text-sm">
+              <button onClick={() => setShowRegister(true)} className="text-blue-600 underline">
+                Crear cuenta de cliente
               </button>
             </p>
           </>
         ) : (
           <>
-            <h1 className="text-xl font-bold text-gray-900 mb-5 text-center">Registrar Cliente</h1>
+            <h2 className="text-xl font-semibold mb-4 text-center" style={{ color: "var(--text-dark)" }}>
+              Registrar Cliente
+            </h2>
 
-            {[
-              {name: "nombre", label: "Nombre completo"},
-              {name: "cedula", label: "Cédula"},
-              {name: "telefono", label: "Teléfono"},
-              {name: "correo", label: "Correo"},
-              {name: "direccion", label: "Dirección"},
-            ].map(field => (
-              <input key={field.name}
-                className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full mb-4 outline-none focus:ring-2 focus:ring-green-500 transition"
-                placeholder={field.label}
-                value={newUser[field.name]}
-                onChange={e => setNewUser({...newUser, [field.name]: e.target.value})}
+            {[ "nombre", "cedula", "telefono", "correo", "direccion" ].map(field => (
+              <input key={field}
+                className="border rounded-md w-full p-3 mb-3 text-black"
+                style={{ backgroundColor: "var(--input-bg)", borderColor: "var(--input-border)" }}
+                placeholder={field.toUpperCase()}
+                value={newUser[field]}
+                onChange={e => setNewUser({...newUser, [field]: e.target.value})}
               />
             ))}
 
-            <input className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full mb-4 outline-none focus:ring-2 focus:ring-green-500 transition"
-              placeholder="Sucursal (si aplica)"
-              value={newUser.sucursal}
-              onChange={e => setNewUser({...newUser, sucursal: e.target.value})}
+            <input
+              className="border rounded-md w-full p-3 mb-3 text-black"
+              style={{ backgroundColor: "var(--input-bg)" }}
+              placeholder="Sucursal (opcional)"
               disabled={newUser.externo}
+              value={newUser.sucursal}
+              onChange={e => setNewUser({ ...newUser, sucursal: e.target.value})}
             />
 
-            <label className="flex gap-3 items-center text-sm text-gray-700">
-              <input type="checkbox"
-                checked={newUser.externo}
-                onChange={() => setNewUser({...newUser, externo: !newUser.externo, sucursal: ""})}
-              />
-              Soy externo (sin sucursal)
-            </label>
-
-            <input type="password"
-              className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full my-4 outline-none focus:ring-2 focus:ring-green-500 transition"
-              placeholder="Contraseña"
-              value={newUser.password}
-              onChange={e => setNewUser({...newUser, password: e.target.value})}
-            />
-
-            <button onClick={handleRegisterClient} className="w-full bg-green-600 text-white p-3 rounded-lg font-semibold hover:bg-green-700 transition">
+            <button
+              onClick={handleRegisterClient}
+              className="w-full text-white p-3 rounded-md font-semibold mt-3 transition hover:scale-105"
+              style={{ backgroundColor: "var(--primary)" }}
+            >
               Registrar
             </button>
 
-            {registerError && <p className="text-red-600 text-sm mt-3 text-center">{registerError}</p>}
-            {registerSuccess && <p className="text-green-600 text-sm mt-3 text-center">{registerSuccess}</p>}
+            {registerError && <p className="text-red-600 mt-3 text-center">{registerError}</p>}
+            {registerSuccess && <p className="text-green-600 mt-3 text-center">{registerSuccess}</p>}
 
-            <p className="mt-5 text-center text-sm text-gray-600">
-              <button onClick={() => setShowRegister(false)} className="text-gray-700 font-semibold hover:underline">
+            <p className="mt-5 text-center text-sm">
+              <button onClick={() => setShowRegister(false)} className="text-gray-700 underline">
                 Volver al login
               </button>
             </p>
