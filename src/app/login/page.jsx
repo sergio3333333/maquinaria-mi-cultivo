@@ -30,7 +30,6 @@ export default function Login() {
     password: "",
   });
 
-  // ------------------------ LOGIN ------------------------
   const handleLogin = async () => {
     setError("");
 
@@ -49,7 +48,6 @@ export default function Login() {
       document.cookie = `token=${token}; path=/;`;
       document.cookie = `role=${role}; path=/;`;
 
-      // Redirect by role
       if (role === "admin") router.push("/dashboard/admin");
       if (role === "tecnico") router.push("/dashboard/tecnico");
       if (role === "cliente") router.push("/dashboard/cliente");
@@ -59,12 +57,10 @@ export default function Login() {
     }
   };
 
-  // ------------------------ REGISTER CLIENT ------------------------
   const handleRegisterClient = async () => {
     setRegisterError("");
     setRegisterSuccess("");
 
-    // Validar campos obligatorios
     const { nombre, cedula, telefono, correo, sucursal, direccion, password } = newUser;
 
     if (!nombre || !cedula || !telefono || !correo || !direccion || (!sucursal && !newUser.externo) || !password) {
@@ -89,7 +85,6 @@ export default function Login() {
 
       setRegisterSuccess(`Cliente registrado con éxito: ${correo}`);
 
-      // Reset fields
       setNewUser({
         nombre: "",
         cedula: "",
@@ -107,30 +102,42 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen p-10 flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-6 rounded shadow w-96">
+    <div className="min-h-screen p-6 flex justify-center items-center bg-gradient-to-br from-gray-200 to-gray-50">
+      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm border border-gray-200">
 
         {!showRegister ? (
           <>
-            <h1 className="text-2xl font-bold mb-4">Iniciar Sesión</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">Iniciar Sesión</h1>
 
-            <input className="border p-2 w-full mb-3" placeholder="Correo" value={email} onChange={e => setEmail(e.target.value)} />
+            <input className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full mb-4 outline-none focus:ring-2 focus:ring-blue-500 transition"
+              placeholder="Correo"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
 
-            <input type="password" className="border p-2 w-full mb-3" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} />
+            <input type="password"
+              className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full mb-4 outline-none focus:ring-2 focus:ring-blue-500 transition"
+              placeholder="Contraseña"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
 
-            <button onClick={handleLogin} className="w-full bg-blue-600 text-white p-2 rounded">Entrar</button>
+            <button onClick={handleLogin} className="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+              Entrar
+            </button>
 
-            {error && <p className="text-red-600 mt-3">{error}</p>}
+            {error && <p className="text-red-600 text-sm mt-3 text-center">{error}</p>}
 
-            <p className="mt-4 text-center">
-              <button onClick={() => setShowRegister(true)} className="text-blue-600 hover:underline">
-                Crear nuevo usuario cliente
+            <p className="mt-5 text-center text-sm text-gray-600">
+              ¿No tienes cuenta?{" "}
+              <button onClick={() => setShowRegister(true)} className="text-blue-600 font-semibold hover:underline">
+                Crear nuevo usuario
               </button>
             </p>
           </>
         ) : (
           <>
-            <h1 className="text-xl font-bold mb-4">Registrar Cliente</h1>
+            <h1 className="text-xl font-bold text-gray-900 mb-5 text-center">Registrar Cliente</h1>
 
             {[
               {name: "nombre", label: "Nombre completo"},
@@ -138,51 +145,56 @@ export default function Login() {
               {name: "telefono", label: "Teléfono"},
               {name: "correo", label: "Correo"},
               {name: "direccion", label: "Dirección"},
-            ].map((field) => (
-              <input key={field.name} className="border p-2 w-full mb-3"
+            ].map(field => (
+              <input key={field.name}
+                className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full mb-4 outline-none focus:ring-2 focus:ring-green-500 transition"
                 placeholder={field.label}
                 value={newUser[field.name]}
                 onChange={e => setNewUser({...newUser, [field.name]: e.target.value})}
               />
             ))}
 
-            <input className="border p-2 w-full mb-3"
+            <input className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full mb-4 outline-none focus:ring-2 focus:ring-green-500 transition"
               placeholder="Sucursal (si aplica)"
               value={newUser.sucursal}
               onChange={e => setNewUser({...newUser, sucursal: e.target.value})}
               disabled={newUser.externo}
             />
 
-            <label className="flex gap-2 mb-3 text-sm">
-              <input type="checkbox" checked={newUser.externo}
+            <label className="flex gap-3 items-center text-sm text-gray-700">
+              <input type="checkbox"
+                checked={newUser.externo}
                 onChange={() => setNewUser({...newUser, externo: !newUser.externo, sucursal: ""})}
               />
               Soy externo (sin sucursal)
             </label>
 
-            <input type="password" className="border p-2 w-full mb-3"
+            <input type="password"
+              className="border border-gray-300 bg-gray-50 focus:bg-white rounded-lg p-3 w-full my-4 outline-none focus:ring-2 focus:ring-green-500 transition"
               placeholder="Contraseña"
               value={newUser.password}
               onChange={e => setNewUser({...newUser, password: e.target.value})}
             />
 
-            <button onClick={handleRegisterClient} className="w-full bg-green-600 text-white p-2 rounded">Registrar</button>
+            <button onClick={handleRegisterClient} className="w-full bg-green-600 text-white p-3 rounded-lg font-semibold hover:bg-green-700 transition">
+              Registrar
+            </button>
 
-            {registerError && <p className="text-red-600 mt-3">{registerError}</p>}
-            {registerSuccess && <p className="text-green-600 mt-3">{registerSuccess}</p>}
+            {registerError && <p className="text-red-600 text-sm mt-3 text-center">{registerError}</p>}
+            {registerSuccess && <p className="text-green-600 text-sm mt-3 text-center">{registerSuccess}</p>}
 
-            <p className="mt-4 text-center">
-              <button onClick={() => setShowRegister(false)} className="text-gray-600 hover:underline">
+            <p className="mt-5 text-center text-sm text-gray-600">
+              <button onClick={() => setShowRegister(false)} className="text-gray-700 font-semibold hover:underline">
                 Volver al login
               </button>
             </p>
           </>
         )}
-
       </div>
     </div>
   );
 }
+
 
 
 
